@@ -13,12 +13,31 @@ export const App = observer(() => {
   }
   return (
     <div style={{ margin: 16 }}>
-      <div>Added books: </div>
+      <div>Added books count: </div>
+      <button style={{ marginLeft: 16 }} onClick={() => {}}>
+        Shuffle books
+      </button>
+      <button style={{ marginLeft: 16 }} onClick={() => {}}>
+        Sort by title
+      </button>
+      <button style={{ marginLeft: 16 }} onClick={() => {}}>
+        Sort by author
+      </button>
+      <button style={{ marginLeft: 16 }} onClick={() => {}}>
+        Sort by author
+      </button>
+      <input
+        style={{ marginLeft: 16 }}
+        onChange={() => {}}
+        name="Search"
+        placeholder="Search title"
+      ></input>
       {data !== undefined &&
         data.books.map((item, index) => (
           <ul key={index}>
             <div>{`Title: ${item.title}, Author: ${item.author}`}</div>{" "}
-            <button>Add</button>
+            <button onClick={() => {}}>Add</button>
+            <button onClick={() => {}}>Remove</button>
           </ul>
         ))}
     </div>

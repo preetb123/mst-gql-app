@@ -1,6 +1,7 @@
 import { Instance } from "mobx-state-tree";
 import { RootStoreBase } from "./RootStore.base";
 import { localStorageMixin } from "mst-gql";
+import { BookModelType } from "./BookModel";
 
 export interface RootStoreType extends Instance<typeof RootStore.Type> {}
 
