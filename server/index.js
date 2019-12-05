@@ -2,46 +2,57 @@ const { ApolloServer, gql } = require("apollo-server");
 
 const books = [
   {
+    id: "1",
     title: "Harry Potter and the Chamber of Secrets",
     author: "J.K. Rowling"
   },
   {
+    id: "2",
     title: "Jurassic Park",
     author: "Michael Crichton"
   },
   {
+    id: "3",
     title: "Shattered Pieces",
     author: "Cairon Holt"
   },
   {
+    id: "4",
     title: "A Guide to Courteous Thievery ",
     author: "Pascal Gale"
   },
   {
+    id: "5",
     title: "The Stars Tonight",
     author: "Martyna House"
   },
   {
+    id: "6",
     title: "Angels and Demons",
     author: "Eamonn Pennington"
   },
   {
+    id: "7",
     title: "Love and Hate",
     author: "Clarissa Mcfarland"
   },
   {
+    id: "8",
     title: "War and Peace ",
     author: "Regina Kearns"
   },
   {
+    id: "9",
     title: "Till Death Do Us Part ",
     author: "Sorcha Sandoval"
   },
   {
+    id: "10",
     title: "Double Jeopardy ",
     author: "Allen Grey"
   },
   {
+    id: "11",
     title: "Liberty or Death ",
     author: "Maaria Xiong"
   }
@@ -55,6 +66,7 @@ const typeDefs = gql`
 
   # This "Book" type defines the queryable fields for every book in our data source.
   type Book {
+    id: ID
     title: String
     author: String
   }

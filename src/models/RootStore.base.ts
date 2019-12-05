@@ -11,7 +11,7 @@ import { bookModelPrimitives, BookModelSelector } from "./BookModel.base"
 
 /* The TypeScript type that explicits the refs to other models in order to prevent a circular refs issue */
 type Refs = {
-
+  books: ObservableMap<string, BookModelType>
 }
 
 /**
@@ -19,9 +19,9 @@ type Refs = {
 */
 export const RootStoreBase = withTypedRefs<Refs>()(MSTGQLStore
   .named("RootStore")
-  .extend(configureStoreMixin([['Book', () => BookModel]], []))
+  .extend(configureStoreMixin([['Book', () => BookModel]], ['Book']))
   .props({
-
+    books: types.optional(types.map(types.late((): any => BookModel)), {})
   })
   .actions(self => ({
     queryBooks(variables?: {  }, resultSelector: string | ((qb: BookModelSelector) => BookModelSelector) = bookModelPrimitives.toString(), options: QueryOptions = {}) {
