@@ -20,18 +20,41 @@ export const App = observer(() => {
       <button style={{ marginLeft: 16 }} onClick={() => {}}>
         Shuffle books
       </button>
-      <button style={{ marginLeft: 16 }} onClick={() => {}}>
-        Sort by title
-      </button>
-      <button style={{ marginLeft: 16 }} onClick={() => {}}>
-        Sort by author
-      </button>
-      <button style={{ marginLeft: 16 }} onClick={() => {}}>
-        Sort by author
-      </button>
+      <select
+        value={store.sortBy}
+        onChange={e => {
+          store.changeSortOrder(e.target.value);
+        }}
+      >
+        <option value="title">Title</option>
+        <option value="author">Author</option>
+        <option value="id">BookID</option>
+      </select>
+      <label>
+        Contains a:
+        <input
+          name="containsa"
+          type="checkbox"
+          checked={store.filters.includes("containsa")}
+          onChange={event =>
+            store.addOrRemoveFilter(event.target.checked, "containsa")
+          }
+        />
+      </label>
+      <label>
+        Contains e:
+        <input
+          name="containse"
+          type="checkbox"
+          checked={store.filters.includes("containse")}
+          onChange={event =>
+            store.addOrRemoveFilter(event.target.checked, "containse")
+          }
+        />
+      </label>
       <input
         style={{ marginLeft: 16 }}
-        onChange={e => store.addFilter(e.target.value)}
+        onChange={e => store.addSearchString(e.target.value)}
         name="Search"
         placeholder="Search title"
       ></input>

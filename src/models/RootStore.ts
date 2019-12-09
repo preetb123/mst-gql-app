@@ -7,7 +7,9 @@ import { selectFromBook } from "./BookModel.base";
 export interface RootStoreType extends Instance<typeof RootStore.Type> {}
 
 export const RootStore = RootStoreBase.props({
-  filter: types.optional(types.string, ""),
+  searchString: types.optional(types.string, ""),
+  sortBy: types.optional(types.string, "id"),
+  filters: types.optional(types.array(types.string), []),
   addedBooks: types.array(types.string),
   filteredBooks: types.optional(
     types.array(types.reference(BookModel as any)),
@@ -22,25 +24,61 @@ export const RootStore = RootStoreBase.props({
       return Array.from(self.books.values()).filter(book => book.id === id)[0];
     },
     getFilteredBooks() {
-      if (self.filter.length === 0) {
-        return Array.from(self.books.values());
+      let result: Array<BookModelType>;
+      if (self.filters.length === 0) {
+        result = Array.from(self.books.values());
+      } else {
+        result = Array.from(self.books.values());
+        self.filters.forEach(filter => {
+          switch (filter) {
+            case "containsa":
+              result = result.filter(book => book.author?.includes("a"));
+              break;
+            case "containse":
+              result = result.filter(book => book.author?.includes("e"));
+              break;
+          }
+          //Array.from(self.books.values()).filter(book => book.);
+        });
+        // result = Array.from(self.books.values()).filter(book => {
+        //   return book?.author?.includes(self.searchString);
+        // });
       }
-      return Array.from(self.books.values()).filter(book => {
-        if (
-          book !== null &&
-          book !== undefined &&
-          book.author !== null &&
-          book.author !== undefined
-        ) {
-          return book.author.includes(self.filter);
+      return result.sort((a, b) => {
+        switch (self.sortBy) {
+          case "id":
+            return parseInt(a.id) > parseInt(b.id) ? -1 : 1;
+          case "author":
+            return (a.author ?? "").localeCompare(b.author ?? "");
+          case "title":
+            return (a.title ?? "").localeCompare(b.title ?? "");
+          default:
+            return parseInt(a.id) > parseInt(b.id) ? -1 : 1;
         }
       });
     }
   }))
   .actions(self => ({
-    addFilter(str: string) {
-      self.filter = str;
-      console.log("addFilter: ", str);
+    addSearchString(searchString: string) {
+      self.searchString = searchString;
+    },
+    addOrRemoveFilter(checked: boolean, filter: string) {
+      if (checked) {
+        self.filters.push(filter);
+      } else {
+        let index = self.filters.indexOf(filter);
+        self.filters.splice(index, 1);
+      }
+      console.log(
+        "addOrRemoveFilter: checked: ",
+        checked,
+        ", filter: ",
+        filter
+      );
+    },
+    changeSortOrder(sortBy: string) {
+      self.sortBy = sortBy;
+      console.log("addFilter: ", sortBy);
     },
     // This is an auto-generated example action.
     loadBooks() {
