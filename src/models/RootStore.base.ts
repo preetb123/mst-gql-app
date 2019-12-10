@@ -9,6 +9,10 @@ import { BookModel, BookModelType } from "./BookModel"
 import { bookModelPrimitives, BookModelSelector } from "./BookModel.base"
 
 
+export type BookInfo = {
+  id: string | undefined
+  title: string | undefined
+}
 /* The TypeScript type that explicits the refs to other models in order to prevent a circular refs issue */
 type Refs = {
   books: ObservableMap<string, BookModelType>
@@ -26,6 +30,11 @@ export const RootStoreBase = withTypedRefs<Refs>()(MSTGQLStore
   .actions(self => ({
     queryBooks(variables?: {  }, resultSelector: string | ((qb: BookModelSelector) => BookModelSelector) = bookModelPrimitives.toString(), options: QueryOptions = {}) {
       return self.query<{ books: BookModelType[]}>(`query books { books {
+        ${typeof resultSelector === "function" ? resultSelector(new BookModelSelector()).toString() : resultSelector}
+      } }`, variables, options)
+    },
+    queryFilterBooks(variables: { ids: BookInfo | undefined[] }, resultSelector: string | ((qb: BookModelSelector) => BookModelSelector) = bookModelPrimitives.toString(), options: QueryOptions = {}) {
+      return self.query<{ filterBooks: BookModelType[]}>(`query filterBooks($ids: [BookInfo]) { filterBooks(ids: $ids) {
         ${typeof resultSelector === "function" ? resultSelector(new BookModelSelector()).toString() : resultSelector}
       } }`, variables, options)
     },

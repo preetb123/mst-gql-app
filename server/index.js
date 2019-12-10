@@ -76,12 +76,22 @@ const typeDefs = gql`
   # case, the "books" query returns an array of zero or more Books (defined above).
   type Query {
     books: [Book]
+    filterBooks(ids: [BookInfo]): [Book]
+  }
+
+  input BookInfo {
+    id: String
+    title: String
   }
 `;
 
 const resolvers = {
   Query: {
-    books: () => books
+    books: () => books,
+    filterBooks: ({ parent, args, context, info }) => {
+      console.log(args);
+      return books;
+    }
   }
 };
 
